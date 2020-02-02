@@ -41,7 +41,7 @@ AudioConnection c9(mix2, 0, headphones, 1);
 AudioConnection c10(mix2, 0, dac, 0);
 
 // Create an object to control the audio shield.
-// 
+//
 AudioControlSGTL5000 audioShield;
 
 // Bounce objects to read six pushbuttons (pins 0-5)
@@ -55,71 +55,71 @@ Bounce button5 = Bounce(5, 5);
 
 
 void setup() {
-  // Configure the pushbutton pins for pullups.
-  // Each button should connect from the pin to GND.
-  pinMode(0, INPUT_PULLUP);
-  pinMode(1, INPUT_PULLUP);
-  pinMode(2, INPUT_PULLUP);
-  pinMode(3, INPUT_PULLUP);
-  pinMode(4, INPUT_PULLUP);
-  pinMode(5, INPUT_PULLUP);
+    // Configure the pushbutton pins for pullups.
+    // Each button should connect from the pin to GND.
+    pinMode(0, INPUT_PULLUP);
+    pinMode(1, INPUT_PULLUP);
+    pinMode(2, INPUT_PULLUP);
+    pinMode(3, INPUT_PULLUP);
+    pinMode(4, INPUT_PULLUP);
+    pinMode(5, INPUT_PULLUP);
 
-  // Audio connections require memory to work.  For more
-  // detailed information, see the MemoryAndCpuUsage example
-  AudioMemory(10);
+    // Audio connections require memory to work.  For more
+    // detailed information, see the MemoryAndCpuUsage example
+    AudioMemory(10);
 
-  // turn on the output
-  audioShield.enable();
-  audioShield.volume(0.5);
+    // turn on the output
+    audioShield.enable();
+    audioShield.volume(0.5);
 
-  // by default the Teensy 3.1 DAC uses 3.3Vp-p output
-  // if your 3.3V power has noise, switching to the
-  // internal 1.2V reference can give you a clean signal
-  //dac.analogReference(INTERNAL);
+    // by default the Teensy 3.1 DAC uses 3.3Vp-p output
+    // if your 3.3V power has noise, switching to the
+    // internal 1.2V reference can give you a clean signal
+    //dac.analogReference(INTERNAL);
 
-  // reduce the gain on mixer channels, so more than 1
-  // sound can play simultaneously without clipping
-  mix1.gain(0, 0.4);
-  mix1.gain(1, 0.4);
-  mix1.gain(2, 0.4);
-  mix1.gain(3, 0.4);
-  mix2.gain(1, 0.4);
-  mix2.gain(2, 0.4);
+    // reduce the gain on mixer channels, so more than 1
+    // sound can play simultaneously without clipping
+    mix1.gain(0, 0.4);
+    mix1.gain(1, 0.4);
+    mix1.gain(2, 0.4);
+    mix1.gain(3, 0.4);
+    mix2.gain(1, 0.4);
+    mix2.gain(2, 0.4);
 }
 
 void loop() {
-  // Update all the button objects
-  button0.update();
-  button1.update();
-  button2.update();
-  button3.update();
-  button4.update();
-  button5.update();
+    // Update all the button objects
+    button0.update();
+    button1.update();
+    button2.update();
+    button3.update();
+    button4.update();
+    button5.update();
 
-  // When the buttons are pressed, just start a sound playing.
-  // The audio library will play each sound through the mixers
-  // so any combination can play simultaneously.
-  //
-  if (button0.fallingEdge()) {
-    sound0.play(AudioSampleSnare);
-  }
-  if (button1.fallingEdge()) {
-    sound1.play(AudioSampleTomtom);
-  }
-  if (button2.fallingEdge()) {
-    sound2.play(AudioSampleHihat);
-  }
-  if (button3.fallingEdge()) {
-    sound3.play(AudioSampleKick);
-  }
-  if (button4.fallingEdge()) {
-    // comment this line to work with Teensy 3.0.
-    // the Gong sound is very long, too much for 3.0's memory
-    sound4.play(AudioSampleGong);
-  }
-  if (button5.fallingEdge()) {
-    sound5.play(AudioSampleCashregister);
-  }
+    // When the buttons are pressed, just start a sound playing.
+    // The audio library will play each sound through the mixers
+    // so any combination can play simultaneously.
+    //
+    if (button0.fallingEdge()) {
+        sound0.play(AudioSampleSnare);
+    }
+    if (button1.fallingEdge()) {
+        sound1.play(AudioSampleTomtom);
+    }
+    if (button2.fallingEdge()) {
+        sound2.play(AudioSampleHihat);
+    }
+    if (button3.fallingEdge()) {
+        sound3.play(AudioSampleKick);
+    }
+    if (button4.fallingEdge()) {
+        // comment this line to work with Teensy 3.0.
+        // the Gong sound is very long, too much for 3.0's memory
+        sound4.play(AudioSampleGong);
+    }
+    if (button5.fallingEdge()) {
+        sound5.play(AudioSampleCashregister);
+    }
 
 }
 

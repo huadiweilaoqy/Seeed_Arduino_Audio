@@ -1,9 +1,9 @@
 /*
- * A simple hardware test which receives audio on the A2 analog pin
- * and sends it to the PWM (pin 3) output and DAC (A14 pin) output.
- *
- * This example code is in the public domain.
- */
+    A simple hardware test which receives audio on the A2 analog pin
+    and sends it to the PWM (pin 3) output and DAC (A14 pin) output.
+
+    This example code is in the public domain.
+*/
 
 #include <Audio.h>
 #include <Wire.h>
@@ -20,15 +20,15 @@ AudioConnection          patchCord2(adc1, pwm1);
 // GUItool: end automatically generated code
 
 void setup() {
-  // Audio connections require memory to work.  For more
-  // detailed information, see the MemoryAndCpuUsage example
-  AudioMemory(12);
+    // Audio connections require memory to work.  For more
+    // detailed information, see the MemoryAndCpuUsage example
+    AudioMemory(12);
 }
 
 void loop() {
-  // Do nothing here.  The Audio flows automatically
+    // Do nothing here.  The Audio flows automatically
 
-  // When AudioInputAnalog is running, analogRead() must NOT be used.
+    // When AudioInputAnalog is running, analogRead() must NOT be used.
 }
 
 

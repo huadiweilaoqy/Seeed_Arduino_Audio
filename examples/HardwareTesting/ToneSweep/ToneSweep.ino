@@ -1,24 +1,24 @@
 /*
-  Demo of the audio sweep function.
-  The user specifies the amplitude,
-  start and end frequencies (which can sweep up or down)
-  and the length of time of the sweep.
-   
-FMI:
-The audio board uses the following pins.
- 6 - MEMCS
- 7 - MOSI
- 9 - BCLK
-10 - SDCS
-11 - MCLK
-12 - MISO
-13 - RX
-14 - SCLK
-15 - VOL
-18 - SDA
-19 - SCL
-22 - TX
-23 - LRCLK
+    Demo of the audio sweep function.
+    The user specifies the amplitude,
+    start and end frequencies (which can sweep up or down)
+    and the length of time of the sweep.
+
+    FMI:
+    The audio board uses the following pins.
+    6 - MEMCS
+    7 - MOSI
+    9 - BCLK
+    10 - SDCS
+    11 - MCLK
+    12 - MISO
+    13 - RX
+    14 - SCLK
+    15 - VOL
+    18 - SDA
+    19 - SCL
+    22 - TX
+    23 - LRCLK
 
 */
 
@@ -45,39 +45,37 @@ int t_hix = 22000;
 // Length of time for the sweep in seconds
 float t_timex = 10;
 // <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>
-void setup(void)
-{
-  
-  Serial.begin(9600);
-  while (!Serial) ;
-  delay(3000);
+void setup(void) {
 
-  AudioMemory(2);
+    Serial.begin(9600);
+    while (!Serial) ;
+    delay(3000);
 
-  audioShield.enable();
-  audioShield.volume(0.5);
+    AudioMemory(2);
 
-  Serial.println("setup done");
+    audioShield.enable();
+    audioShield.volume(0.5);
 
-  if(!myEffect.play(t_ampx,t_lox,t_hix,t_timex)) {
-    Serial.println("AudioSynthToneSweep - begin failed");
-    while(1);
-  }
-  // wait for the sweep to end
-  while(myEffect.isPlaying());
+    Serial.println("setup done");
 
-  // and now reverse the sweep
-  if(!myEffect.play(t_ampx,t_hix,t_lox,t_timex)) {
-    Serial.println("AudioSynthToneSweep - begin failed");
-    while(1);
-  }
-  // wait for the sweep to end
-  while(myEffect.isPlaying());
-  Serial.println("Done");
+    if (!myEffect.play(t_ampx, t_lox, t_hix, t_timex)) {
+        Serial.println("AudioSynthToneSweep - begin failed");
+        while (1);
+    }
+    // wait for the sweep to end
+    while (myEffect.isPlaying());
+
+    // and now reverse the sweep
+    if (!myEffect.play(t_ampx, t_hix, t_lox, t_timex)) {
+        Serial.println("AudioSynthToneSweep - begin failed");
+        while (1);
+    }
+    // wait for the sweep to end
+    while (myEffect.isPlaying());
+    Serial.println("Done");
 }
 
-void loop(void)
-{
+void loop(void) {
 }
 
 

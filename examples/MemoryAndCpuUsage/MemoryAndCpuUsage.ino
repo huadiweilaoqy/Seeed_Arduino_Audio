@@ -39,34 +39,34 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=517,297
 
 
 void setup() {
-  // give the audio library some memory.  We'll be able
-  // to see how much it actually uses, which can be used
-  // to reduce this to the minimum necessary.
-  AudioMemory(20);
+    // give the audio library some memory.  We'll be able
+    // to see how much it actually uses, which can be used
+    // to reduce this to the minimum necessary.
+    AudioMemory(20);
 
-  // enable the audio shield
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.6);
+    // enable the audio shield
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.6);
 
-  // create a simple percussive sound using pink noise
-  // and an envelope to shape it.
-  pink1.amplitude(0.5);
-  envelope1.attack(1.5);
-  envelope1.hold(5);
-  envelope1.decay(20);
-  envelope1.sustain(0);
+    // create a simple percussive sound using pink noise
+    // and an envelope to shape it.
+    pink1.amplitude(0.5);
+    envelope1.attack(1.5);
+    envelope1.hold(5);
+    envelope1.decay(20);
+    envelope1.sustain(0);
 
-  // create a simple bass note using a sine wave
-  sine1.frequency(120);
-  sine1.amplitude(0.6);
-  envelope2.attack(6.5);
-  envelope2.hold(25);
-  envelope2.decay(70);
-  envelope2.sustain(0);
+    // create a simple bass note using a sine wave
+    sine1.frequency(120);
+    sine1.amplitude(0.6);
+    envelope2.attack(6.5);
+    envelope2.hold(25);
+    envelope2.decay(70);
+    envelope2.sustain(0);
 
-  // add both the note together, so we can hear them
-  mixer1.gain(0, 0.5);
-  mixer1.gain(1, 0.5);
+    // add both the note together, so we can hear them
+    mixer1.gain(0, 0.5);
+    mixer1.gain(1, 0.5);
 }
 
 
@@ -75,80 +75,90 @@ int speed = 60;
 
 
 void loop() {
-  // a simple sequencer, count goes from 0 to 15
-  count = count + 1;
-  if (count >= 16) count = 0;
-
-  // play percussive sounds every 4th time
-  if (count == 0) envelope1.noteOn();
-  if (count == 4) envelope1.noteOn();
-  if (count == 8) envelope1.noteOn();
-  if (count == 12) envelope1.noteOn();
-
-  // play the bass tone every 8th time
-  if (count == 4) {
-	sine1.amplitude(0.6);
-	sine1.frequency(100);
-	envelope2.noteOn();
-  }
-  if (count == 12) {
-	sine1.amplitude(0.3);
-	sine1.frequency(120);
-	envelope2.noteOn();
-  }
-
-  // turn off the sine wave, which saves
-  // CPU power (especially since the sine goes
-  // to a CPU-hungry FFT analysis)
-  if (count == 6) {
-	sine1.amplitude(0);
-  }
-
-  // check for incoming characters from the serial monitor
-  if (Serial.available()) {
-    char c = Serial.read();
-    if ((c == 'r' || c == 'R')) {
-      pink1.processorUsageMaxReset();
-      fft256_1.processorUsageMaxReset();
-      AudioProcessorUsageMaxReset();
-      AudioMemoryUsageMaxReset();
-      Serial.println("Reset all max numbers");
+    // a simple sequencer, count goes from 0 to 15
+    count = count + 1;
+    if (count >= 16) {
+        count = 0;
     }
-    if ((c == 'f' || c == 'F') && speed > 16) {
-      speed = speed - 2;
-    }
-    if ((c == 's' || c == 'S') && speed < 250) {
-      speed = speed + 2;
-    }
-  }
 
-  // print a summary of the current & maximum usage
-  Serial.print("CPU: ");
-  Serial.print("pink=");
-  Serial.print(pink1.processorUsage());
-  Serial.print(",");
-  Serial.print(pink1.processorUsageMax());
-  Serial.print("  ");
-  Serial.print("fft=");
-  Serial.print(fft256_1.processorUsage());
-  Serial.print(",");
-  Serial.print(fft256_1.processorUsageMax());
-  Serial.print("  ");
-  Serial.print("all=");
-  Serial.print(AudioProcessorUsage());
-  Serial.print(",");
-  Serial.print(AudioProcessorUsageMax());
-  Serial.print("    ");
-  Serial.print("Memory: ");
-  Serial.print(AudioMemoryUsage());
-  Serial.print(",");
-  Serial.print(AudioMemoryUsageMax());
-  Serial.print("    ");
-  Serial.print("Send: (R)eset, (S)lower, (F)aster");
-  Serial.println();
+    // play percussive sounds every 4th time
+    if (count == 0) {
+        envelope1.noteOn();
+    }
+    if (count == 4) {
+        envelope1.noteOn();
+    }
+    if (count == 8) {
+        envelope1.noteOn();
+    }
+    if (count == 12) {
+        envelope1.noteOn();
+    }
 
-  // very simple timing   :-)
-  delay(speed);
+    // play the bass tone every 8th time
+    if (count == 4) {
+        sine1.amplitude(0.6);
+        sine1.frequency(100);
+        envelope2.noteOn();
+    }
+    if (count == 12) {
+        sine1.amplitude(0.3);
+        sine1.frequency(120);
+        envelope2.noteOn();
+    }
+
+    // turn off the sine wave, which saves
+    // CPU power (especially since the sine goes
+    // to a CPU-hungry FFT analysis)
+    if (count == 6) {
+        sine1.amplitude(0);
+    }
+
+    // check for incoming characters from the serial monitor
+    if (Serial.available()) {
+        char c = Serial.read();
+        if ((c == 'r' || c == 'R')) {
+            pink1.processorUsageMaxReset();
+            fft256_1.processorUsageMaxReset();
+            AudioProcessorUsageMaxReset();
+            AudioMemoryUsageMaxReset();
+            Serial.println("Reset all max numbers");
+        }
+        if ((c == 'f' || c == 'F') && speed > 16) {
+            speed = speed - 2;
+        }
+        if ((c == 's' || c == 'S') && speed < 250) {
+            speed = speed + 2;
+        }
+    }
+
+    // print a summary of the current & maximum usage
+    Serial.print("CPU: ");
+    Serial.print("pink=");
+    Serial.print(pink1.processorUsage());
+    Serial.print(",");
+    Serial.print(pink1.processorUsageMax());
+    Serial.print("  ");
+    Serial.print("fft=");
+    Serial.print(fft256_1.processorUsage());
+    Serial.print(",");
+    Serial.print(fft256_1.processorUsageMax());
+    Serial.print("  ");
+    Serial.print("all=");
+    Serial.print(AudioProcessorUsage());
+    Serial.print(",");
+    Serial.print(AudioProcessorUsageMax());
+    Serial.print("    ");
+    Serial.print("Memory: ");
+    Serial.print(AudioMemoryUsage());
+    Serial.print(",");
+    Serial.print(AudioMemoryUsageMax());
+    Serial.print("    ");
+    Serial.print("Send: (R)eset, (S)lower, (F)aster");
+    Serial.println();
+
+    // very simple timing   :-)
+    delay(speed);
 
 }
 

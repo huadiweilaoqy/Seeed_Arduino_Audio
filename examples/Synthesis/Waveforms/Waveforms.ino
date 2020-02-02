@@ -39,101 +39,101 @@ Bounce button0 = Bounce(0, 15);
 Bounce button1 = Bounce(1, 15);
 Bounce button2 = Bounce(2, 15);
 
-int current_waveform=0;
+int current_waveform = 0;
 
 extern const int16_t myWaveform[256];  // defined in myWaveform.ino
 
 void setup() {
-  Serial.begin(9600);
-  pinMode(0, INPUT_PULLUP);
-  pinMode(1, INPUT_PULLUP);
-  pinMode(2, INPUT_PULLUP);
+    Serial.begin(9600);
+    pinMode(0, INPUT_PULLUP);
+    pinMode(1, INPUT_PULLUP);
+    pinMode(2, INPUT_PULLUP);
 
-  // Audio connections require memory to work.  For more
-  // detailed information, see the MemoryAndCpuUsage example
-  AudioMemory(10);
+    // Audio connections require memory to work.  For more
+    // detailed information, see the MemoryAndCpuUsage example
+    AudioMemory(10);
 
-  // Comment these out if not using the audio adaptor board.
-  // This may wait forever if the SDA & SCL pins lack
-  // pullup resistors
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.8); // caution: very loud - use oscilloscope only!
+    // Comment these out if not using the audio adaptor board.
+    // This may wait forever if the SDA & SCL pins lack
+    // pullup resistors
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.8); // caution: very loud - use oscilloscope only!
 
-  // Confirgure both to use "myWaveform" for WAVEFORM_ARBITRARY
-  waveform1.arbitraryWaveform(myWaveform, 172.0);
-  waveform2.arbitraryWaveform(myWaveform, 172.0);
+    // Confirgure both to use "myWaveform" for WAVEFORM_ARBITRARY
+    waveform1.arbitraryWaveform(myWaveform, 172.0);
+    waveform2.arbitraryWaveform(myWaveform, 172.0);
 
-  // configure both waveforms for 440 Hz and maximum amplitude
-  waveform1.frequency(440);
-  waveform2.frequency(440);
-  waveform1.amplitude(1.0);
-  waveform2.amplitude(1.0);
+    // configure both waveforms for 440 Hz and maximum amplitude
+    waveform1.frequency(440);
+    waveform2.frequency(440);
+    waveform1.amplitude(1.0);
+    waveform2.amplitude(1.0);
 
-  current_waveform = WAVEFORM_TRIANGLE;
-  waveform1.begin(current_waveform);
+    current_waveform = WAVEFORM_TRIANGLE;
+    waveform1.begin(current_waveform);
 }
 
 void loop() {
-  // Read the buttons and knobs, scale knobs to 0-1.0
-  button0.update();
-  button1.update();
-  button2.update();
-  float knob_A2 = (float)analogRead(A2) / 1023.0;
-  float knob_A3 = (float)analogRead(A3) / 1023.0;
+    // Read the buttons and knobs, scale knobs to 0-1.0
+    button0.update();
+    button1.update();
+    button2.update();
+    float knob_A2 = (float)analogRead(A2) / 1023.0;
+    float knob_A3 = (float)analogRead(A3) / 1023.0;
 
-  AudioNoInterrupts();
-  // use Knob A2 to adjust the frequency of both waveforms
-  waveform1.frequency(100.0 + knob_A2 * 900.0);
-  waveform2.frequency(100.0 + knob_A2 * 900.0);
-  // use Knob A3 to adjust the phase of only waveform #1
-  waveform1.phase(knob_A3 * 360.0);
-  AudioInterrupts();
-
-  // Button 0 changes the waveform type
-  if (button0.fallingEdge()) {
-    switch (current_waveform) {
-      case WAVEFORM_SINE:
-        current_waveform = WAVEFORM_SAWTOOTH;
-        Serial.println("Sawtooth");
-        break;
-      case WAVEFORM_SAWTOOTH:
-        current_waveform = WAVEFORM_SAWTOOTH_REVERSE;
-        Serial.println("Reverse Sawtooth");
-        break;
-      case WAVEFORM_SAWTOOTH_REVERSE:
-        current_waveform = WAVEFORM_SQUARE;
-        Serial.println("Square");
-        break;
-      case WAVEFORM_SQUARE:
-        current_waveform = WAVEFORM_TRIANGLE;
-        Serial.println("Triangle");
-        break;
-      case WAVEFORM_TRIANGLE:
-        current_waveform = WAVEFORM_TRIANGLE_VARIABLE;
-        Serial.println("Variable Triangle");
-        break;
-      case WAVEFORM_TRIANGLE_VARIABLE:
-        current_waveform = WAVEFORM_ARBITRARY;
-        Serial.println("Arbitary Waveform");
-        break;
-      case WAVEFORM_ARBITRARY:
-        current_waveform = WAVEFORM_PULSE;
-        Serial.println("Pulse");
-        break;
-      case WAVEFORM_PULSE:
-        current_waveform = WAVEFORM_SAMPLE_HOLD;
-        Serial.println("Sample & Hold");
-        break;
-      case WAVEFORM_SAMPLE_HOLD:
-        current_waveform = WAVEFORM_SINE;
-        Serial.println("Sine");
-        break;
-    }
     AudioNoInterrupts();
-    waveform1.begin(current_waveform);
-    waveform2.begin(WAVEFORM_SINE);
+    // use Knob A2 to adjust the frequency of both waveforms
+    waveform1.frequency(100.0 + knob_A2 * 900.0);
+    waveform2.frequency(100.0 + knob_A2 * 900.0);
+    // use Knob A3 to adjust the phase of only waveform #1
+    waveform1.phase(knob_A3 * 360.0);
     AudioInterrupts();
-  }
-  
+
+    // Button 0 changes the waveform type
+    if (button0.fallingEdge()) {
+        switch (current_waveform) {
+            case WAVEFORM_SINE:
+                current_waveform = WAVEFORM_SAWTOOTH;
+                Serial.println("Sawtooth");
+                break;
+            case WAVEFORM_SAWTOOTH:
+                current_waveform = WAVEFORM_SAWTOOTH_REVERSE;
+                Serial.println("Reverse Sawtooth");
+                break;
+            case WAVEFORM_SAWTOOTH_REVERSE:
+                current_waveform = WAVEFORM_SQUARE;
+                Serial.println("Square");
+                break;
+            case WAVEFORM_SQUARE:
+                current_waveform = WAVEFORM_TRIANGLE;
+                Serial.println("Triangle");
+                break;
+            case WAVEFORM_TRIANGLE:
+                current_waveform = WAVEFORM_TRIANGLE_VARIABLE;
+                Serial.println("Variable Triangle");
+                break;
+            case WAVEFORM_TRIANGLE_VARIABLE:
+                current_waveform = WAVEFORM_ARBITRARY;
+                Serial.println("Arbitary Waveform");
+                break;
+            case WAVEFORM_ARBITRARY:
+                current_waveform = WAVEFORM_PULSE;
+                Serial.println("Pulse");
+                break;
+            case WAVEFORM_PULSE:
+                current_waveform = WAVEFORM_SAMPLE_HOLD;
+                Serial.println("Sample & Hold");
+                break;
+            case WAVEFORM_SAMPLE_HOLD:
+                current_waveform = WAVEFORM_SINE;
+                Serial.println("Sine");
+                break;
+        }
+        AudioNoInterrupts();
+        waveform1.begin(current_waveform);
+        waveform2.begin(WAVEFORM_SINE);
+        AudioInterrupts();
+    }
+
 }
 

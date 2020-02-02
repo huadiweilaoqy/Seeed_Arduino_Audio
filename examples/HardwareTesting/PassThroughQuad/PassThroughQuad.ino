@@ -1,11 +1,11 @@
 /*
- * A simple hardware test which receives audio from the audio shield
- * Line-In pins and send it to the Line-Out pins and headphone jack.
- *
- * Four audio channels are used.
- *
- * This example code is in the public domain.
- */
+    A simple hardware test which receives audio from the audio shield
+    Line-In pins and send it to the Line-Out pins and headphone jack.
+
+    Four audio channels are used.
+
+    This example code is in the public domain.
+*/
 
 #include <Audio.h>
 #include <Wire.h>
@@ -30,21 +30,21 @@ const int myInput = AUDIO_INPUT_LINEIN;
 
 
 void setup() {
-  // Audio connections require memory to work.  For more
-  // detailed information, see the MemoryAndCpuUsage example
-  AudioMemory(12);
+    // Audio connections require memory to work.  For more
+    // detailed information, see the MemoryAndCpuUsage example
+    AudioMemory(12);
 
-  // Enable the first audio shield, select input, and enable output
-  sgtl5000_1.setAddress(LOW);
-  sgtl5000_1.enable();
-  sgtl5000_1.inputSelect(myInput);
-  sgtl5000_1.volume(0.5);
+    // Enable the first audio shield, select input, and enable output
+    sgtl5000_1.setAddress(LOW);
+    sgtl5000_1.enable();
+    sgtl5000_1.inputSelect(myInput);
+    sgtl5000_1.volume(0.5);
 
-  // Enable the second audio shield, select input, and enable output
-  sgtl5000_2.setAddress(HIGH);
-  sgtl5000_2.enable();
-  sgtl5000_2.inputSelect(myInput);
-  sgtl5000_2.volume(0.5);
+    // Enable the second audio shield, select input, and enable output
+    sgtl5000_2.setAddress(HIGH);
+    sgtl5000_2.enable();
+    sgtl5000_2.inputSelect(myInput);
+    sgtl5000_2.volume(0.5);
 }
 
 void loop() {

@@ -2,7 +2,7 @@
 //
 // http://www.pjrc.com/store/audio_tutorial_kit.html
 // https://hackaday.io/project/8292-microcontroller-audio-workshop-had-supercon-2015
-// 
+//
 // Part 1-4: Blink LED while Playing Music
 //
 // Do something while playing a music file.  Admittedly
@@ -39,48 +39,48 @@ AudioControlSGTL5000     sgtl5000_1;
 //#define SDCARD_SCK_PIN   13
 
 void setup() {
-  Serial.begin(9600);
-  AudioMemory(8);
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.45);
-  SPI.setMOSI(SDCARD_MOSI_PIN);
-  SPI.setSCK(SDCARD_SCK_PIN);
-  if (!(SD.begin(SDCARD_CS_PIN))) {
-    while (1) {
-      Serial.println("Unable to access the SD card");
-      delay(500);
+    Serial.begin(9600);
+    AudioMemory(8);
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.45);
+    SPI.setMOSI(SDCARD_MOSI_PIN);
+    SPI.setSCK(SDCARD_SCK_PIN);
+    if (!(SD.begin(SDCARD_CS_PIN))) {
+        while (1) {
+            Serial.println("Unable to access the SD card");
+            delay(500);
+        }
     }
-  }
-  pinMode(13, OUTPUT); // LED on pin 13
-  delay(1000);
+    pinMode(13, OUTPUT); // LED on pin 13
+    delay(1000);
 }
 
 void loop() {
-  if (playSdWav1.isPlaying() == false) {
-    Serial.println("Start playing");
-    playSdWav1.play("SDTEST3.WAV");
-    delay(10); // wait for library to parse WAV info
-  }
+    if (playSdWav1.isPlaying() == false) {
+        Serial.println("Start playing");
+        playSdWav1.play("SDTEST3.WAV");
+        delay(10); // wait for library to parse WAV info
+    }
 
-  // print the play time offset
-  Serial.print("Playing, now at ");
-  Serial.print(playSdWav1.positionMillis());
-  Serial.println(" ms");
+    // print the play time offset
+    Serial.print("Playing, now at ");
+    Serial.print(playSdWav1.positionMillis());
+    Serial.println(" ms");
 
-  // blink LED and print info while playing
-  digitalWrite(13, HIGH);
-  delay(250);
-  digitalWrite(13, LOW);
-  delay(250);
+    // blink LED and print info while playing
+    digitalWrite(13, HIGH);
+    delay(250);
+    digitalWrite(13, LOW);
+    delay(250);
 
-  // read the knob position (analog input A2)
-  /*
-  int knob = analogRead(A2);
-  float vol = (float)knob / 1280.0;
-  sgtl5000_1.volume(vol);
-  Serial.print("volume = ");
-  Serial.println(vol);
-  */
+    // read the knob position (analog input A2)
+    /*
+        int knob = analogRead(A2);
+        float vol = (float)knob / 1280.0;
+        sgtl5000_1.volume(vol);
+        Serial.print("volume = ");
+        Serial.println(vol);
+    */
 }
 
 

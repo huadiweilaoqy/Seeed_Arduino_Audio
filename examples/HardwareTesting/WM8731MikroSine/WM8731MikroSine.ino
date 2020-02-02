@@ -50,40 +50,40 @@ AudioControlWM8731master wm8731m1;       //xy=292,379
 
 
 void setup() {
-  wm8731m1.enable();
+    wm8731m1.enable();
 
-  AudioMemory(15);
+    AudioMemory(15);
 
-  waveform1.begin(WAVEFORM_SINE);
-  waveform1.frequency(440);
-  waveform1.amplitude(0.9);
+    waveform1.begin(WAVEFORM_SINE);
+    waveform1.frequency(440);
+    waveform1.amplitude(0.9);
 
-  wm8731m1.volume(0.50);
-  wm8731m1.inputSelect(AUDIO_INPUT_MIC);
-  // wm8731m1.inputSelect(AUDIO_INPUT_LINEIN); // not connected on MikroE-506
+    wm8731m1.volume(0.50);
+    wm8731m1.inputSelect(AUDIO_INPUT_MIC);
+    // wm8731m1.inputSelect(AUDIO_INPUT_LINEIN); // not connected on MikroE-506
 }
 
 elapsedMillis msec;
 
 // Print a simple level meter
 void loop() {
-  if (msec > 40) {
-    if (rms1.available() && rms2.available()) {
-      msec = 0;
-      int level_left = rms1.read() * 30.0;
-      int level_right = rms2.read() * 30.0;
-      printchar(' ', 30 - level_left);
-      printchar('<', level_left);
-      Serial.print("||");
-      printchar('>', level_right);
-      Serial.println();
+    if (msec > 40) {
+        if (rms1.available() && rms2.available()) {
+            msec = 0;
+            int level_left = rms1.read() * 30.0;
+            int level_right = rms2.read() * 30.0;
+            printchar(' ', 30 - level_left);
+            printchar('<', level_left);
+            Serial.print("||");
+            printchar('>', level_right);
+            Serial.println();
+        }
     }
-  }
 }
 
 void printchar(char c, int num) {
-  for (int i=0; i < num; i++) {
-    Serial.write(c);
-  }
+    for (int i = 0; i < num; i++) {
+        Serial.write(c);
+    }
 }
 

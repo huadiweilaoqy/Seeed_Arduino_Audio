@@ -35,44 +35,44 @@ AudioConnection patchCord1(audioInput, 0, myFFT, 0);
 AudioControlSGTL5000 audioShield;
 
 void setup() {
-  // Audio connections require memory to work.  For more
-  // detailed information, see the MemoryAndCpuUsage example
-  AudioMemory(12);
+    // Audio connections require memory to work.  For more
+    // detailed information, see the MemoryAndCpuUsage example
+    AudioMemory(12);
 
-  // Enable the audio shield and set the output volume.
-  audioShield.enable();
-  audioShield.inputSelect(myInput);
-  audioShield.volume(0.5);
+    // Enable the audio shield and set the output volume.
+    audioShield.enable();
+    audioShield.inputSelect(myInput);
+    audioShield.volume(0.5);
 
-  // Configure the window algorithm to use
-  myFFT.windowFunction(AudioWindowHanning1024);
-  //myFFT.windowFunction(NULL);
+    // Configure the window algorithm to use
+    myFFT.windowFunction(AudioWindowHanning1024);
+    //myFFT.windowFunction(NULL);
 
-  // Create a synthetic sine wave, for testing
-  // To use this, edit the connections above
-  sinewave.amplitude(0.8);
-  sinewave.frequency(1034.007);
+    // Create a synthetic sine wave, for testing
+    // To use this, edit the connections above
+    sinewave.amplitude(0.8);
+    sinewave.frequency(1034.007);
 }
 
 void loop() {
-  float n;
-  int i;
+    float n;
+    int i;
 
-  if (myFFT.available()) {
-    // each time new FFT data is available
-    // print it all to the Arduino Serial Monitor
-    Serial.print("FFT: ");
-    for (i=0; i<40; i++) {
-      n = myFFT.read(i);
-      if (n >= 0.01) {
-        Serial.print(n);
-        Serial.print(" ");
-      } else {
-        Serial.print("  -  "); // don't print "0.00"
-      }
+    if (myFFT.available()) {
+        // each time new FFT data is available
+        // print it all to the Arduino Serial Monitor
+        Serial.print("FFT: ");
+        for (i = 0; i < 40; i++) {
+            n = myFFT.read(i);
+            if (n >= 0.01) {
+                Serial.print(n);
+                Serial.print(" ");
+            } else {
+                Serial.print("  -  "); // don't print "0.00"
+            }
+        }
+        Serial.println();
     }
-    Serial.println();
-  }
 }
 
 

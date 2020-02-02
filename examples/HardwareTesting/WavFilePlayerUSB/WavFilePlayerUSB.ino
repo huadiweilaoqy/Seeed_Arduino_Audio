@@ -27,42 +27,41 @@ AudioConnection          patchCord3(playWav1, 0, dac, 0);
 //#define SDCARD_SCK_PIN   13
 
 void setup() {
-  Serial.begin(9600);
+    Serial.begin(9600);
 
-  // Audio connections require memory to work.  For more
-  // detailed information, see the MemoryAndCpuUsage example
-  AudioMemory(20);
+    // Audio connections require memory to work.  For more
+    // detailed information, see the MemoryAndCpuUsage example
+    AudioMemory(20);
 
-  SPI.setMOSI(SDCARD_MOSI_PIN);
-  SPI.setSCK(SDCARD_SCK_PIN);
-  if (!(SD.begin(SDCARD_CS_PIN))) {
-    // stop here, but print a message repetitively
-    while (1) {
-      Serial.println("Unable to access the SD card");
-      delay(500);
+    SPI.setMOSI(SDCARD_MOSI_PIN);
+    SPI.setSCK(SDCARD_SCK_PIN);
+    if (!(SD.begin(SDCARD_CS_PIN))) {
+        // stop here, but print a message repetitively
+        while (1) {
+            Serial.println("Unable to access the SD card");
+            delay(500);
+        }
     }
-  }
 }
 
-void playFile(const char *filename)
-{
-  playWav1.play(filename);
-  // A brief delay for the library read WAV info
-  delay(5);
-  // Simply wait for the file to finish playing.
-  while (playWav1.isPlaying()) {
-  }
+void playFile(const char* filename) {
+    playWav1.play(filename);
+    // A brief delay for the library read WAV info
+    delay(5);
+    // Simply wait for the file to finish playing.
+    while (playWav1.isPlaying()) {
+    }
 }
 
 void loop() {
-  playFile("SDTEST1.WAV");  // filenames are always uppercase 8.3 format
-  delay(500);
-  playFile("SDTEST2.WAV");
-  delay(500);
-  playFile("SDTEST3.WAV");
-  delay(500);
-  playFile("SDTEST4.WAV");
-  delay(1500);
+    playFile("SDTEST1.WAV");  // filenames are always uppercase 8.3 format
+    delay(500);
+    playFile("SDTEST2.WAV");
+    delay(500);
+    playFile("SDTEST3.WAV");
+    delay(500);
+    playFile("SDTEST4.WAV");
+    delay(1500);
 }
 
 // A known problem occurs on Macintosh computers, where the Mac's driver

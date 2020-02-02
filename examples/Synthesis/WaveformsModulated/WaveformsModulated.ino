@@ -1,4 +1,4 @@
-// Waveform Modulation Example - Create waveforms with 
+// Waveform Modulation Example - Create waveforms with
 // modulated frequency
 //
 // This example is meant to be used with 3 buttons (pin 0,
@@ -40,97 +40,97 @@ Bounce button0 = Bounce(0, 15);
 Bounce button1 = Bounce(1, 15);
 Bounce button2 = Bounce(2, 15);
 
-int current_waveform=0;
+int current_waveform = 0;
 
 extern const int16_t myWaveform[256];  // defined in myWaveform.ino
 
 void setup() {
-  Serial.begin(9600);
-  pinMode(0, INPUT_PULLUP);
-  pinMode(1, INPUT_PULLUP);
-  pinMode(2, INPUT_PULLUP);
+    Serial.begin(9600);
+    pinMode(0, INPUT_PULLUP);
+    pinMode(1, INPUT_PULLUP);
+    pinMode(2, INPUT_PULLUP);
 
-  delay(300);
-  Serial.println("Waveform Modulation Test");
-  
-  // Audio connections require memory to work.  For more
-  // detailed information, see the MemoryAndCpuUsage example
-  AudioMemory(12);
+    delay(300);
+    Serial.println("Waveform Modulation Test");
 
-  // Comment these out if not using the audio adaptor board.
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.8); // caution: very loud - use oscilloscope only!
+    // Audio connections require memory to work.  For more
+    // detailed information, see the MemoryAndCpuUsage example
+    AudioMemory(12);
 
-  // Confirgure both to use "myWaveform" for WAVEFORM_ARBITRARY
-  waveformMod1.arbitraryWaveform(myWaveform, 172.0);
+    // Comment these out if not using the audio adaptor board.
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.8); // caution: very loud - use oscilloscope only!
 
-  // Configure for middle C note without modulation
-  waveformMod1.frequency(261.63);
-  waveformMod1.amplitude(1.0);
-  sine1.frequency(20.3); // Sine waves are low frequency oscillators (LFO)
-  sine2.frequency(1.2);
+    // Confirgure both to use "myWaveform" for WAVEFORM_ARBITRARY
+    waveformMod1.arbitraryWaveform(myWaveform, 172.0);
 
-  current_waveform = WAVEFORM_TRIANGLE_VARIABLE;
-  waveformMod1.begin(current_waveform);
+    // Configure for middle C note without modulation
+    waveformMod1.frequency(261.63);
+    waveformMod1.amplitude(1.0);
+    sine1.frequency(20.3); // Sine waves are low frequency oscillators (LFO)
+    sine2.frequency(1.2);
 
-  // uncomment to try modulating phase instead of frequency
-  //waveformMod1.phaseModulation(720.0);
+    current_waveform = WAVEFORM_TRIANGLE_VARIABLE;
+    waveformMod1.begin(current_waveform);
+
+    // uncomment to try modulating phase instead of frequency
+    //waveformMod1.phaseModulation(720.0);
 }
 
 void loop() {
-  // Read the buttons and knobs, scale knobs to 0-1.0
-  button0.update();
-  button1.update();
-  button2.update();
-  float knob_A2 = (float)analogRead(A2) / 1023.0;
-  float knob_A3 = (float)analogRead(A3) / 1023.0;
+    // Read the buttons and knobs, scale knobs to 0-1.0
+    button0.update();
+    button1.update();
+    button2.update();
+    float knob_A2 = (float)analogRead(A2) / 1023.0;
+    float knob_A3 = (float)analogRead(A3) / 1023.0;
 
-  // use Knobsto adjust the amount of modulation
-  sine1.amplitude(knob_A2);
-  sine2.amplitude(knob_A3);
+    // use Knobsto adjust the amount of modulation
+    sine1.amplitude(knob_A2);
+    sine2.amplitude(knob_A3);
 
-  // Button 0 or 2 changes the waveform type
-  if (button0.fallingEdge() || button2.fallingEdge()) {
-    switch (current_waveform) {
-      case WAVEFORM_SINE:
-        current_waveform = WAVEFORM_SAWTOOTH;
-        Serial.println("Sawtooth");
-        break;
-      case WAVEFORM_SAWTOOTH:
-        current_waveform = WAVEFORM_SAWTOOTH_REVERSE;
-        Serial.println("Reverse Sawtooth");
-        break;
-      case WAVEFORM_SAWTOOTH_REVERSE:
-        current_waveform = WAVEFORM_SQUARE;
-        Serial.println("Square");
-        break;
-      case WAVEFORM_SQUARE:
-        current_waveform = WAVEFORM_TRIANGLE;
-        Serial.println("Triangle");
-        break;
-      case WAVEFORM_TRIANGLE:
-        current_waveform = WAVEFORM_TRIANGLE_VARIABLE;
-        Serial.println("Variable Triangle");
-        break;
-      case WAVEFORM_TRIANGLE_VARIABLE:
-        current_waveform = WAVEFORM_ARBITRARY;
-        Serial.println("Arbitary Waveform");
-        break;
-      case WAVEFORM_ARBITRARY:
-        current_waveform = WAVEFORM_PULSE;
-        Serial.println("Pulse");
-        break;
-      case WAVEFORM_PULSE:
-        current_waveform = WAVEFORM_SAMPLE_HOLD;
-        Serial.println("Sample & Hold");
-        break;
-      case WAVEFORM_SAMPLE_HOLD:
-        current_waveform = WAVEFORM_SINE;
-        Serial.println("Sine");
-        break;
+    // Button 0 or 2 changes the waveform type
+    if (button0.fallingEdge() || button2.fallingEdge()) {
+        switch (current_waveform) {
+            case WAVEFORM_SINE:
+                current_waveform = WAVEFORM_SAWTOOTH;
+                Serial.println("Sawtooth");
+                break;
+            case WAVEFORM_SAWTOOTH:
+                current_waveform = WAVEFORM_SAWTOOTH_REVERSE;
+                Serial.println("Reverse Sawtooth");
+                break;
+            case WAVEFORM_SAWTOOTH_REVERSE:
+                current_waveform = WAVEFORM_SQUARE;
+                Serial.println("Square");
+                break;
+            case WAVEFORM_SQUARE:
+                current_waveform = WAVEFORM_TRIANGLE;
+                Serial.println("Triangle");
+                break;
+            case WAVEFORM_TRIANGLE:
+                current_waveform = WAVEFORM_TRIANGLE_VARIABLE;
+                Serial.println("Variable Triangle");
+                break;
+            case WAVEFORM_TRIANGLE_VARIABLE:
+                current_waveform = WAVEFORM_ARBITRARY;
+                Serial.println("Arbitary Waveform");
+                break;
+            case WAVEFORM_ARBITRARY:
+                current_waveform = WAVEFORM_PULSE;
+                Serial.println("Pulse");
+                break;
+            case WAVEFORM_PULSE:
+                current_waveform = WAVEFORM_SAMPLE_HOLD;
+                Serial.println("Sample & Hold");
+                break;
+            case WAVEFORM_SAMPLE_HOLD:
+                current_waveform = WAVEFORM_SINE;
+                Serial.println("Sine");
+                break;
+        }
+        waveformMod1.begin(current_waveform);
     }
-    waveformMod1.begin(current_waveform);
-  }
-  
+
 }
 

@@ -12,10 +12,10 @@ AudioConnection          patchCord2(waveform1, 0, pt8211_1, 1);
 // GUItool: end automatically generated code
 
 void setup() {
-  AudioMemory(15);
-  waveform1.begin(WAVEFORM_SINE);
-  waveform1.frequency(440);
-  waveform1.amplitude(0.99);
+    AudioMemory(15);
+    waveform1.begin(WAVEFORM_SINE);
+    waveform1.frequency(440);
+    waveform1.amplitude(0.99);
 }
 
 void loop() {

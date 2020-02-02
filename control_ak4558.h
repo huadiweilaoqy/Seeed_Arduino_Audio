@@ -1,9 +1,9 @@
 /*
- * HiFi Audio Codec Module support library for Teensy 3.x
- *
- * Copyright 2015, Michele Perla
- *
- */
+    HiFi Audio Codec Module support library for Teensy 3.x
+
+    Copyright 2015, Michele Perla
+
+*/
 #ifndef control_ak4558_h_
 #define control_ak4558_h_
 
@@ -28,27 +28,27 @@
 // DIF2-1-0 = 011 ( 16 bit I2S compatible when BICK = 32fs)
 
 #ifndef PIN_PDN
-#define PIN_PDN 1
+    #define PIN_PDN 1
 #endif
 // Power-Down & Reset Mode Pin
 // “L”: Power-down and Reset, “H”: Normal operation
 // The AK4558 should be reset once by bringing PDN pin = “L”
 
 #ifndef AK4558_CAD1
-#define AK4558_CAD1 1
+    #define AK4558_CAD1 1
 #endif
 // Chip Address 1 pin
 // set to 'H' by default, configurable to 'L' via a jumper on bottom side of the board
 
 #ifndef AK4558_CAD0
-#define AK4558_CAD0 1
+    #define AK4558_CAD0 1
 #endif
 // Chip Address 0 pin
 // set to 'H' by default, configurable to 'L' via a jumper on bottom side of the board
 
 #define AK4558_I2C_ADDR (0x10 + (AK4558_CAD1<<1) + AK4558_CAD0)
 // datasheet page 81:
-// This address is 7 bits long followed by the eighth bit that is a data direction bit (R/W). 
+// This address is 7 bits long followed by the eighth bit that is a data direction bit (R/W).
 // The most significant five bits of the slave address are fixed as “00100”. The next bits are
 // CAD1 and CAD0 (device address bit). These bits identify the specific device on the bus.
 // The hard-wired input pins (CAD1 and CAD0) set these device address bits (Figure 69)
@@ -230,26 +230,32 @@
 // ATR 7-0: Attenuation Level (Table 30)
 // Default:FF(0dB)
 
-class AudioControlAK4558 : public AudioControl
-{
-public:
-	bool enable(void);		//enables the CODEC, does not power up ADC nor DAC (use enableIn() and enableOut() for selective power up)
-	bool enableIn(void);	//powers up ADC
-	bool enableOut(void);	//powers up DAC
-	bool disable(void) { return (disableIn()&&disableOut()); }	//powers down ADC/DAC
-	bool disableIn(void);	//powers down ADC
-	bool disableOut(void);	//powers down DAC
-	bool volume(float n);	//sets LOUT/ROUT volume to n (range 0.0 - 1.0)
-	bool volumeLeft(float n);	//sets LOUT volume to n (range 0.0 - 1.0)
-	bool volumeRight(float n);	//sets ROUT volume to n (range 0.0 - 1.0)
-	bool inputLevel(float n) { return false; }	//not supported by AK4558
-	bool inputSelect(int n) { return false; }	//sets inputs to mono left, mono right, stereo (default stereo), not yet implemented
-private:
-	uint8_t registers[10];
-	void initConfig(void);
-	void readConfig(void);
-	bool write(unsigned int reg, unsigned int val);
-	uint8_t convertVolume(float vol);
+class AudioControlAK4558 : public AudioControl {
+  public:
+    bool enable(
+        void);		//enables the CODEC, does not power up ADC nor DAC (use enableIn() and enableOut() for selective power up)
+    bool enableIn(void);	//powers up ADC
+    bool enableOut(void);	//powers up DAC
+    bool disable(void) {
+        return (disableIn() && disableOut());    //powers down ADC/DAC
+    }
+    bool disableIn(void);	//powers down ADC
+    bool disableOut(void);	//powers down DAC
+    bool volume(float n);	//sets LOUT/ROUT volume to n (range 0.0 - 1.0)
+    bool volumeLeft(float n);	//sets LOUT volume to n (range 0.0 - 1.0)
+    bool volumeRight(float n);	//sets ROUT volume to n (range 0.0 - 1.0)
+    bool inputLevel(float n) {
+        return false;    //not supported by AK4558
+    }
+    bool inputSelect(int n) {
+        return false;    //sets inputs to mono left, mono right, stereo (default stereo), not yet implemented
+    }
+  private:
+    uint8_t registers[10];
+    void initConfig(void);
+    void readConfig(void);
+    bool write(unsigned int reg, unsigned int val);
+    uint8_t convertVolume(float vol);
 };
 
 #endif

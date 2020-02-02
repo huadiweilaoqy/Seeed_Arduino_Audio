@@ -10,29 +10,29 @@ AudioConnection          patchCord1(usb1, 0, i2s1, 0);
 AudioConnection          patchCord2(usb1, 1, i2s1, 1);
 AudioControlSGTL5000     sgtl5000_1;     //xy=302,184
 
-void setup() {                
-  AudioMemory(12);
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.6);
+void setup() {
+    AudioMemory(12);
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.6);
 }
 
 void loop() {
-  // read the PC's volume setting
-  float vol = usb1.volume();
+    // read the PC's volume setting
+    float vol = usb1.volume();
 
-  // scale to a nice range (not too loud)
-  // and adjust the audio shield output volume
-  if (vol > 0) {
-    // scale 0 = 1.0 range to:
-    //  0.3 = almost silent
-    //  0.8 = really loud
-    vol = 0.3 + vol * 0.5;
-  }
+    // scale to a nice range (not too loud)
+    // and adjust the audio shield output volume
+    if (vol > 0) {
+        // scale 0 = 1.0 range to:
+        //  0.3 = almost silent
+        //  0.8 = really loud
+        vol = 0.3 + vol * 0.5;
+    }
 
-  // use the scaled volume setting.  Delete this for fixed volume.
-  sgtl5000_1.volume(vol);
+    // use the scaled volume setting.  Delete this for fixed volume.
+    sgtl5000_1.volume(vol);
 
-  delay(100);
+    delay(100);
 }
 
 // Teensyduino 1.35 & earlier had a problem with USB audio on Macintosh

@@ -56,60 +56,59 @@ AudioControlSGTL5000     sgtl5000_1;
 //#define SDCARD_SCK_PIN   13
 
 void setup() {
-  Serial.begin(9600);
+    Serial.begin(9600);
 
-  // Audio connections require memory to work.  For more
-  // detailed information, see the MemoryAndCpuUsage example
-  AudioMemory(8);
+    // Audio connections require memory to work.  For more
+    // detailed information, see the MemoryAndCpuUsage example
+    AudioMemory(8);
 
-  // Comment these out if not using the audio adaptor board.
-  // This may wait forever if the SDA & SCL pins lack
-  // pullup resistors
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.5);
+    // Comment these out if not using the audio adaptor board.
+    // This may wait forever if the SDA & SCL pins lack
+    // pullup resistors
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.5);
 
-  SPI.setMOSI(SDCARD_MOSI_PIN);
-  SPI.setSCK(SDCARD_SCK_PIN);
-  if (!(SD.begin(SDCARD_CS_PIN))) {
-    // stop here, but print a message repetitively
-    while (1) {
-      Serial.println("Unable to access the SD card");
-      delay(500);
+    SPI.setMOSI(SDCARD_MOSI_PIN);
+    SPI.setSCK(SDCARD_SCK_PIN);
+    if (!(SD.begin(SDCARD_CS_PIN))) {
+        // stop here, but print a message repetitively
+        while (1) {
+            Serial.println("Unable to access the SD card");
+            delay(500);
+        }
     }
-  }
 }
 
-void playFile(const char *filename)
-{
-  Serial.print("Playing file: ");
-  Serial.println(filename);
+void playFile(const char* filename) {
+    Serial.print("Playing file: ");
+    Serial.println(filename);
 
-  // Start playing the file.  This sketch continues to
-  // run while the file plays.
-  playWav1.play(filename);
+    // Start playing the file.  This sketch continues to
+    // run while the file plays.
+    playWav1.play(filename);
 
-  // A brief delay for the library read WAV info
-  delay(5);
+    // A brief delay for the library read WAV info
+    delay(5);
 
-  // Simply wait for the file to finish playing.
-  while (playWav1.isPlaying()) {
-    // uncomment these lines if you audio shield
-    // has the optional volume pot soldered
-    //float vol = analogRead(15);
-    //vol = vol / 1024;
-    // sgtl5000_1.volume(vol);
-  }
+    // Simply wait for the file to finish playing.
+    while (playWav1.isPlaying()) {
+        // uncomment these lines if you audio shield
+        // has the optional volume pot soldered
+        //float vol = analogRead(15);
+        //vol = vol / 1024;
+        // sgtl5000_1.volume(vol);
+    }
 }
 
 
 void loop() {
-  playFile("SDTEST1.WAV");  // filenames are always uppercase 8.3 format
-  delay(500);
-  playFile("SDTEST2.WAV");
-  delay(500);
-  playFile("SDTEST3.WAV");
-  delay(500);
-  playFile("SDTEST4.WAV");
-  delay(1500);
+    playFile("SDTEST1.WAV");  // filenames are always uppercase 8.3 format
+    delay(500);
+    playFile("SDTEST2.WAV");
+    delay(500);
+    playFile("SDTEST3.WAV");
+    delay(500);
+    playFile("SDTEST4.WAV");
+    delay(1500);
 }
 

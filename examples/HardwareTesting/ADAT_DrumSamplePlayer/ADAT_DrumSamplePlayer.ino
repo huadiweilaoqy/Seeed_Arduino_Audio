@@ -27,8 +27,8 @@ AudioPlayMemory    sound4;
 AudioPlayMemory    sound5;
 
 // GUItool: begin automatically generated code
-AudioSynthWaveform       sine1;         
-AudioOutputADAT          adat1;        
+AudioSynthWaveform       sine1;
+AudioOutputADAT          adat1;
 AudioConnection          patchCord1(sine1, 0, adat1, 0);
 AudioConnection          patchCord2(sine1, 0, adat1, 1);
 AudioConnection          patchCord3(sound0, 0, adat1, 2);
@@ -39,9 +39,9 @@ AudioConnection          patchCord7(sound5, 0, adat1, 6);
 // GUItool: end automatically generated code
 
 void setup() {
-  AudioMemory(10);
-  sine1.begin(WAVEFORM_SINE);
-  sine1.frequency(2000);
+    AudioMemory(10);
+    sine1.begin(WAVEFORM_SINE);
+    sine1.frequency(2000);
 
 }
 
@@ -49,28 +49,28 @@ void setup() {
 // as long as the board has power
 
 void loop() {
-  sine1.amplitude(1.0);
+    sine1.amplitude(1.0);
 
-  sound0.play(AudioSampleKick);
+    sound0.play(AudioSampleKick);
 
-  delay(250);
+    delay(250);
 
-  sound1.play(AudioSampleHihat);
+    sound1.play(AudioSampleHihat);
 
-  delay(250);
-  
-  sound1.play(AudioSampleHihat);
-  sound2.play(AudioSampleSnare);
+    delay(250);
 
-  delay(250);
+    sound1.play(AudioSampleHihat);
+    sound2.play(AudioSampleSnare);
 
-  sound1.play(AudioSampleHihat);
+    delay(250);
 
-  delay(250);
+    sound1.play(AudioSampleHihat);
 
-  sound0.play(AudioSampleKick);
-  sound3.play(AudioSampleGong);
-  
+    delay(250);
 
-  delay(1000);
+    sound0.play(AudioSampleKick);
+    sound3.play(AudioSampleGong);
+
+
+    delay(1000);
 }

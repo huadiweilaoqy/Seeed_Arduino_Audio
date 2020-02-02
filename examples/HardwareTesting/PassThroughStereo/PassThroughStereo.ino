@@ -1,9 +1,9 @@
 /*
- * A simple hardware test which receives audio from the audio shield
- * Line-In pins and send it to the Line-Out pins and headphone jack.
- *
- * This example code is in the public domain.
- */
+    A simple hardware test which receives audio from the audio shield
+    Line-In pins and send it to the Line-Out pins and headphone jack.
+
+    This example code is in the public domain.
+*/
 
 #include <Audio.h>
 #include <Wire.h>
@@ -25,26 +25,26 @@ const int myInput = AUDIO_INPUT_LINEIN;
 
 
 void setup() {
-  // Audio connections require memory to work.  For more
-  // detailed information, see the MemoryAndCpuUsage example
-  AudioMemory(12);
+    // Audio connections require memory to work.  For more
+    // detailed information, see the MemoryAndCpuUsage example
+    AudioMemory(12);
 
-  // Enable the audio shield, select input, and enable output
-  sgtl5000_1.enable();
-  sgtl5000_1.inputSelect(myInput);
-  sgtl5000_1.volume(0.5);
+    // Enable the audio shield, select input, and enable output
+    sgtl5000_1.enable();
+    sgtl5000_1.inputSelect(myInput);
+    sgtl5000_1.volume(0.5);
 }
 
-elapsedMillis volmsec=0;
+elapsedMillis volmsec = 0;
 
 void loop() {
-  // every 50 ms, adjust the volume
-  if (volmsec > 50) {
-    float vol = analogRead(15);
-    vol = vol / 1023.0;
-    //audioShield.volume(vol); // <-- uncomment if you have the optional
-    volmsec = 0;               //     volume pot on your audio shield
-  }
+    // every 50 ms, adjust the volume
+    if (volmsec > 50) {
+        float vol = analogRead(15);
+        vol = vol / 1023.0;
+        //audioShield.volume(vol); // <-- uncomment if you have the optional
+        volmsec = 0;               //     volume pot on your audio shield
+    }
 }
 
 

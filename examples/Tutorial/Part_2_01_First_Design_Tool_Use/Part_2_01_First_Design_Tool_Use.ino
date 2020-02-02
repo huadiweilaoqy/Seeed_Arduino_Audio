@@ -2,7 +2,7 @@
 //
 // http://www.pjrc.com/store/audio_tutorial_kit.html
 // https://hackaday.io/project/8292-microcontroller-audio-workshop-had-supercon-2015
-// 
+//
 // Part 2-1: First Design Tool Use
 
 
@@ -28,29 +28,29 @@
 //#define SDCARD_SCK_PIN   13
 
 void setup() {
-  Serial.begin(9600);
-  AudioMemory(8);
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.5);
-  SPI.setMOSI(SDCARD_MOSI_PIN);
-  SPI.setSCK(SDCARD_SCK_PIN);
-  if (!(SD.begin(SDCARD_CS_PIN))) {
-    while (1) {
-      Serial.println("Unable to access the SD card");
-      delay(500);
+    Serial.begin(9600);
+    AudioMemory(8);
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.5);
+    SPI.setMOSI(SDCARD_MOSI_PIN);
+    SPI.setSCK(SDCARD_SCK_PIN);
+    if (!(SD.begin(SDCARD_CS_PIN))) {
+        while (1) {
+            Serial.println("Unable to access the SD card");
+            delay(500);
+        }
     }
-  }
-  delay(1000);
+    delay(1000);
 }
 
 void loop() {
-  if (playSdWav1.isPlaying() == false) {
-    Serial.println("Start playing");
-    playSdWav1.play("SDTEST3.WAV");
-    delay(10); // wait for library to parse WAV info
-  }
+    if (playSdWav1.isPlaying() == false) {
+        Serial.println("Start playing");
+        playSdWav1.play("SDTEST3.WAV");
+        delay(10); // wait for library to parse WAV info
+    }
 
-  // do nothing while playing...
+    // do nothing while playing...
 }
 
 

@@ -51,85 +51,85 @@ int16_t granularMemory[GRANULAR_MEMORY_SIZE];
 //#define SDCARD_SCK_PIN   13
 
 #define NUM_FILES  4
-const char *filenames[NUM_FILES]={"SDTEST1.WAV", "SDTEST2.WAV", "SDTEST3.WAV", "SDTEST4.WAV"};
-int nextfile=0;
+const char* filenames[NUM_FILES] = {"SDTEST1.WAV", "SDTEST2.WAV", "SDTEST3.WAV", "SDTEST4.WAV"};
+int nextfile = 0;
 
 void setup() {
-  Serial.begin(9600);
-  AudioMemory(10);
+    Serial.begin(9600);
+    AudioMemory(10);
 
-  pinMode(0, INPUT_PULLUP);
-  pinMode(1, INPUT_PULLUP);
-  pinMode(2, INPUT_PULLUP);
+    pinMode(0, INPUT_PULLUP);
+    pinMode(1, INPUT_PULLUP);
+    pinMode(2, INPUT_PULLUP);
 
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.5);
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.5);
 
-  mixer1.gain(0, 0.5);
-  mixer1.gain(1, 0.5);
+    mixer1.gain(0, 0.5);
+    mixer1.gain(1, 0.5);
 
-  // the Granular effect requires memory to operate
-  granular1.begin(granularMemory, GRANULAR_MEMORY_SIZE);
+    // the Granular effect requires memory to operate
+    granular1.begin(granularMemory, GRANULAR_MEMORY_SIZE);
 
-  SPI.setMOSI(SDCARD_MOSI_PIN);
-  SPI.setSCK(SDCARD_SCK_PIN);
-  if (!(SD.begin(SDCARD_CS_PIN))) {
-    // stop here, but print a message repetitively
-    while (1) {
-      Serial.println("Unable to access the SD card");
-      delay(500);
+    SPI.setMOSI(SDCARD_MOSI_PIN);
+    SPI.setSCK(SDCARD_SCK_PIN);
+    if (!(SD.begin(SDCARD_CS_PIN))) {
+        // stop here, but print a message repetitively
+        while (1) {
+            Serial.println("Unable to access the SD card");
+            delay(500);
+        }
     }
-  }
 }
 
 void loop() {
-  if (playSdWav1.isPlaying() == false) {
-    // start the next song playing
-    playSdWav1.play(filenames[nextfile]);
-    Serial.print("Playing: ");
-    Serial.println(filenames[nextfile]);
-    delay(5); // brief delay for the library read WAV info
-    nextfile = nextfile + 1;
-    if (nextfile >= NUM_FILES) {
-      nextfile = 0;
+    if (playSdWav1.isPlaying() == false) {
+        // start the next song playing
+        playSdWav1.play(filenames[nextfile]);
+        Serial.print("Playing: ");
+        Serial.println(filenames[nextfile]);
+        delay(5); // brief delay for the library read WAV info
+        nextfile = nextfile + 1;
+        if (nextfile >= NUM_FILES) {
+            nextfile = 0;
+        }
     }
-  }
 
-  // read pushbuttons
-  button0.update();
-  button1.update();
-  button2.update();
-  // read knobs, scale to 0-1.0 numbers
-  float knobA2 = (float)analogRead(A2) / 1023.0;
-  float knobA3 = (float)analogRead(A3) / 1023.0;
+    // read pushbuttons
+    button0.update();
+    button1.update();
+    button2.update();
+    // read knobs, scale to 0-1.0 numbers
+    float knobA2 = (float)analogRead(A2) / 1023.0;
+    float knobA3 = (float)analogRead(A3) / 1023.0;
 
-  // Button 0 starts Freeze effect
-  if (button0.fallingEdge()) {
-    float msec = 100.0 + (knobA3 * 190.0);
-    granular1.beginFreeze(msec);
-    Serial.print("Begin granular freeze using ");
-    Serial.print(msec);
-    Serial.println(" grains");
-  }
-  if (button0.risingEdge()) {
-    granular1.stop();
-  }
+    // Button 0 starts Freeze effect
+    if (button0.fallingEdge()) {
+        float msec = 100.0 + (knobA3 * 190.0);
+        granular1.beginFreeze(msec);
+        Serial.print("Begin granular freeze using ");
+        Serial.print(msec);
+        Serial.println(" grains");
+    }
+    if (button0.risingEdge()) {
+        granular1.stop();
+    }
 
-  // Button 1 starts Pitch Shift effect
-  if (button1.fallingEdge()) {
-    float msec = 25.0 + (knobA3 * 75.0);
-    granular1.beginPitchShift(msec);
-    Serial.print("Begin granular pitch phift using ");
-    Serial.print(msec);
-    Serial.println(" grains");
-  }
-  if (button1.risingEdge()) {
-    granular1.stop();
-  }
+    // Button 1 starts Pitch Shift effect
+    if (button1.fallingEdge()) {
+        float msec = 25.0 + (knobA3 * 75.0);
+        granular1.beginPitchShift(msec);
+        Serial.print("Begin granular pitch phift using ");
+        Serial.print(msec);
+        Serial.println(" grains");
+    }
+    if (button1.risingEdge()) {
+        granular1.stop();
+    }
 
-  // Continuously adjust the speed, based on the A3 pot
-  float ratio;
-  ratio = powf(2.0, knobA2 * 2.0 - 1.0); // 0.5 to 2.0
-  //ratio = powf(2.0, knobA2 * 6.0 - 3.0); // 0.125 to 8.0 -- uncomment for far too much range!
-  granular1.setSpeed(ratio);
+    // Continuously adjust the speed, based on the A3 pot
+    float ratio;
+    ratio = powf(2.0, knobA2 * 2.0 - 1.0); // 0.5 to 2.0
+    //ratio = powf(2.0, knobA2 * 6.0 - 3.0); // 0.125 to 8.0 -- uncomment for far too much range!
+    granular1.setSpeed(ratio);
 }

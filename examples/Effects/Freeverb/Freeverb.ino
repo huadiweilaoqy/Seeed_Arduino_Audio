@@ -49,89 +49,88 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=236,248
 //#define SDCARD_SCK_PIN   13
 
 void setup() {
-  Serial.begin(9600);
+    Serial.begin(9600);
 
-  // Audio connections require memory to work.  For more
-  // detailed information, see the MemoryAndCpuUsage example
-  AudioMemory(10);
+    // Audio connections require memory to work.  For more
+    // detailed information, see the MemoryAndCpuUsage example
+    AudioMemory(10);
 
-  // Comment these out if not using the audio adaptor board.
-  // This may wait forever if the SDA & SCL pins lack
-  // pullup resistors
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.5);
+    // Comment these out if not using the audio adaptor board.
+    // This may wait forever if the SDA & SCL pins lack
+    // pullup resistors
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.5);
 
-  SPI.setMOSI(SDCARD_MOSI_PIN);
-  SPI.setSCK(SDCARD_SCK_PIN);
-  if (!(SD.begin(SDCARD_CS_PIN))) {
-    // stop here, but print a message repetitively
-    while (1) {
-      Serial.println("Unable to access the SD card");
-      delay(500);
+    SPI.setMOSI(SDCARD_MOSI_PIN);
+    SPI.setSCK(SDCARD_SCK_PIN);
+    if (!(SD.begin(SDCARD_CS_PIN))) {
+        // stop here, but print a message repetitively
+        while (1) {
+            Serial.println("Unable to access the SD card");
+            delay(500);
+        }
     }
-  }
-  mixer1.gain(0, 0.5);
-  mixer1.gain(1, 0.5);
-  mixer2.gain(0, 0.9); // hear 90% "wet"
-  mixer2.gain(1, 0.1); // and  10% "dry"
+    mixer1.gain(0, 0.5);
+    mixer1.gain(1, 0.5);
+    mixer2.gain(0, 0.9); // hear 90% "wet"
+    mixer2.gain(1, 0.1); // and  10% "dry"
 }
 
-void playFile(const char *filename)
-{
-  Serial.print("Playing file: ");
-  Serial.println(filename);
+void playFile(const char* filename) {
+    Serial.print("Playing file: ");
+    Serial.println(filename);
 
-  // Start playing the file.  This sketch continues to
-  // run while the file plays.
-  playSdWav1.play(filename);
+    // Start playing the file.  This sketch continues to
+    // run while the file plays.
+    playSdWav1.play(filename);
 
-  // A brief delay for the library read WAV info
-  delay(5);
+    // A brief delay for the library read WAV info
+    delay(5);
 
-  elapsedMillis msec;
+    elapsedMillis msec;
 
-  // Simply wait for the file to finish playing.
-  while (playSdWav1.isPlaying()) {
+    // Simply wait for the file to finish playing.
+    while (playSdWav1.isPlaying()) {
 
-    // while the music plays, adjust parameters and print info
-    if (msec > 250) {
-      msec = 0;
-      float knob_A1 = 0.9;
-      float knob_A2 = 0.5;
-      float knob_A3 = 0.5;
-      
-// Uncomment these lines to adjust parameters with analog inputs
-      //knob_A1 = (float)analogRead(A1) / 1023.0;
-      //knob_A2 = (float)analogRead(A2) / 1023.0;
-      //knob_A3 = (float)analogRead(A3) / 1023.0;
+        // while the music plays, adjust parameters and print info
+        if (msec > 250) {
+            msec = 0;
+            float knob_A1 = 0.9;
+            float knob_A2 = 0.5;
+            float knob_A3 = 0.5;
 
-      mixer2.gain(0, knob_A1);
-      mixer2.gain(1, 1.0 - knob_A1);
-      freeverb1.roomsize(knob_A2);
-      freeverb1.damping(knob_A3);
-      
-      Serial.print("Reverb: mix=");
-      Serial.print(knob_A1 * 100.0);
-      Serial.print("%, roomsize=");
-      Serial.print(knob_A2 * 100.0);
-      Serial.print("%, damping=");
-      Serial.print(knob_A3 * 100.0);
-      Serial.print("%, CPU Usage=");
-      Serial.print(freeverb1.processorUsage());
-      Serial.println("%");
+            // Uncomment these lines to adjust parameters with analog inputs
+            //knob_A1 = (float)analogRead(A1) / 1023.0;
+            //knob_A2 = (float)analogRead(A2) / 1023.0;
+            //knob_A3 = (float)analogRead(A3) / 1023.0;
+
+            mixer2.gain(0, knob_A1);
+            mixer2.gain(1, 1.0 - knob_A1);
+            freeverb1.roomsize(knob_A2);
+            freeverb1.damping(knob_A3);
+
+            Serial.print("Reverb: mix=");
+            Serial.print(knob_A1 * 100.0);
+            Serial.print("%, roomsize=");
+            Serial.print(knob_A2 * 100.0);
+            Serial.print("%, damping=");
+            Serial.print(knob_A3 * 100.0);
+            Serial.print("%, CPU Usage=");
+            Serial.print(freeverb1.processorUsage());
+            Serial.println("%");
+        }
     }
-  }
 }
 
 
 void loop() {
-  playFile("SDTEST1.WAV");  // filenames are always uppercase 8.3 format
-  delay(500);
-  playFile("SDTEST2.WAV");
-  delay(500);
-  playFile("SDTEST3.WAV");
-  delay(500);
-  playFile("SDTEST4.WAV");
-  delay(1500);
+    playFile("SDTEST1.WAV");  // filenames are always uppercase 8.3 format
+    delay(500);
+    playFile("SDTEST2.WAV");
+    delay(500);
+    playFile("SDTEST3.WAV");
+    delay(500);
+    playFile("SDTEST4.WAV");
+    delay(1500);
 }
 

@@ -31,74 +31,72 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=930,518
 static uint32_t next;
 
 void setup() {
-  // put your setup code here, to run once:
+    // put your setup code here, to run once:
 
-  Serial.begin(115200);
+    Serial.begin(115200);
 
-  // audio library init
-  AudioMemory(15);
+    // audio library init
+    AudioMemory(15);
 
-  next = millis() + 1000;
+    next = millis() + 1000;
 
-  AudioNoInterrupts();
+    AudioNoInterrupts();
 
-  drum1.frequency(60);
-  drum1.length(1500);
-  drum1.secondMix(0.0);
-  drum1.pitchMod(0.55);
-  
-  drum2.frequency(60);
-  drum2.length(300);
-  drum2.secondMix(0.0);
-  drum2.pitchMod(1.0);
-  
-  drum3.frequency(550);
-  drum3.length(400);
-  drum3.secondMix(1.0);
-  drum3.pitchMod(0.5);
+    drum1.frequency(60);
+    drum1.length(1500);
+    drum1.secondMix(0.0);
+    drum1.pitchMod(0.55);
 
-  drum4.frequency(1200);
-  drum4.length(150);
-  drum4.secondMix(0.0);
-  drum4.pitchMod(0.0);
-  
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.5);
+    drum2.frequency(60);
+    drum2.length(300);
+    drum2.secondMix(0.0);
+    drum2.pitchMod(1.0);
 
-  AudioInterrupts();
+    drum3.frequency(550);
+    drum3.length(400);
+    drum3.secondMix(1.0);
+    drum3.pitchMod(0.5);
+
+    drum4.frequency(1200);
+    drum4.length(150);
+    drum4.secondMix(0.0);
+    drum4.pitchMod(0.0);
+
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.5);
+
+    AudioInterrupts();
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+    // put your main code here, to run repeatedly:
 
-  static uint32_t num = 0;
+    static uint32_t num = 0;
 
-  if(millis() == next)
-  {
-    next = millis() + 1000;
+    if (millis() == next) {
+        next = millis() + 1000;
 
-    switch(num % 4)
-    {
-      case 0:
-        drum1.noteOn();
-        break;
-      case 1:
-        drum2.noteOn();
-        break;
-      case 2:
-        drum3.noteOn();
-        break;
-      case 3:
-        drum4.noteOn();
-        break;
+        switch (num % 4) {
+            case 0:
+                drum1.noteOn();
+                break;
+            case 1:
+                drum2.noteOn();
+                break;
+            case 2:
+                drum3.noteOn();
+                break;
+            case 3:
+                drum4.noteOn();
+                break;
+        }
+        num++;
+
+        Serial.print("Diagnostics: ");
+        Serial.print(AudioProcessorUsageMax());
+        Serial.print(" ");
+        Serial.println(AudioMemoryUsageMax());
+        AudioProcessorUsageMaxReset();
     }
-    num++;
-
-    Serial.print("Diagnostics: ");
-    Serial.print(AudioProcessorUsageMax());
-    Serial.print(" ");
-    Serial.println(AudioMemoryUsageMax());
-    AudioProcessorUsageMaxReset();
-  }
 }

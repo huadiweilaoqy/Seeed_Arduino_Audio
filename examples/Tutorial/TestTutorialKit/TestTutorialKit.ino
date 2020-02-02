@@ -61,176 +61,190 @@ Bounce button2 = Bounce(2, 15);
 //#define SDCARD_SCK_PIN   13
 
 int mode;
-int count=1;
-int a1=0, a2=0, a3=0;
-bool anybutton=false;
-bool sdcardinit=true;
-bool playsamples=false;
+int count = 1;
+int a1 = 0, a2 = 0, a3 = 0;
+bool anybutton = false;
+bool sdcardinit = true;
+bool playsamples = false;
 
 void setup() {
-  mode = EEPROM.read(400);
-  AudioMemory(20);
-  pinMode(0, INPUT_PULLUP);
-  pinMode(1, INPUT_PULLUP);
-  pinMode(2, INPUT_PULLUP);
-  Serial.begin(115200);
-  SPI.setMOSI(SDCARD_MOSI_PIN);
-  SPI.setSCK(SDCARD_SCK_PIN);
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.5);
-  sgtl5000_1.inputSelect(AUDIO_INPUT_MIC);
-  sgtl5000_1.micGain(36);
-  mixer1.gain(0, 0);
-  mixer1.gain(1, 0);
-  mixer1.gain(2, 0);
-  mixer1.gain(3, 0.4);
-  mixer2.gain(0, 0);
-  mixer2.gain(1, 0);
-  mixer2.gain(2, 0);
-  mixer2.gain(3, 0.4);
-  waveform1.begin(WAVEFORM_SINE);
-  delay(1000);
-  button0.update();
-  button1.update();
-  button2.update();
-  a1 = analogRead(A1);
-  a2 = analogRead(A2);
-  a3 = analogRead(A3);
+    mode = EEPROM.read(400);
+    AudioMemory(20);
+    pinMode(0, INPUT_PULLUP);
+    pinMode(1, INPUT_PULLUP);
+    pinMode(2, INPUT_PULLUP);
+    Serial.begin(115200);
+    SPI.setMOSI(SDCARD_MOSI_PIN);
+    SPI.setSCK(SDCARD_SCK_PIN);
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.5);
+    sgtl5000_1.inputSelect(AUDIO_INPUT_MIC);
+    sgtl5000_1.micGain(36);
+    mixer1.gain(0, 0);
+    mixer1.gain(1, 0);
+    mixer1.gain(2, 0);
+    mixer1.gain(3, 0.4);
+    mixer2.gain(0, 0);
+    mixer2.gain(1, 0);
+    mixer2.gain(2, 0);
+    mixer2.gain(3, 0.4);
+    waveform1.begin(WAVEFORM_SINE);
+    delay(1000);
+    button0.update();
+    button1.update();
+    button2.update();
+    a1 = analogRead(A1);
+    a2 = analogRead(A2);
+    a3 = analogRead(A3);
 }
 
 void update() {
-  static int state=0;
-  
-  button0.update();
-  button1.update();
-  button2.update();
-  anybutton = false;
-  if (button0.fallingEdge()) {
-    anybutton = true;
-    Serial.println("Button (pin 0) Press");
-    if (playsamples) sample1.play(AudioSampleButton1);
-  }
-  if (button1.fallingEdge()) {
-    anybutton = true;
-    Serial.println("Button (pin 1) Press");
-    if (playsamples) sample1.play(AudioSampleButton2);
-  }
-  if (button2.fallingEdge()) {
-    anybutton = true;
-    Serial.println("Button (pin 2) Press");
-    if (playsamples) sample1.play(AudioSampleButton3);
-  }
-  if (button0.risingEdge()) {
-    Serial.println("Button (pin 0) Release");
-  }
-  if (button1.risingEdge()) {
-    Serial.println("Button (pin 1) Release");
-  }
-  if (button2.risingEdge()) {
-    Serial.println("Button (pin 2) Release");
-  }
-  if (state == 0) {
-    int a = analogRead(A1);
-    if (a > a1 + 50 || a < a1 - 50) {
-      Serial.print("Knob (pin A1) = ");
-      Serial.println(a);
-      if (playsamples && !sample1.isPlaying()) sample1.play(AudioSampleKnob1);
-      a1 = a;
+    static int state = 0;
+
+    button0.update();
+    button1.update();
+    button2.update();
+    anybutton = false;
+    if (button0.fallingEdge()) {
+        anybutton = true;
+        Serial.println("Button (pin 0) Press");
+        if (playsamples) {
+            sample1.play(AudioSampleButton1);
+        }
     }
-    state = 1;
-  } else if (state == 1) {
-    int a = analogRead(A2);
-    if (a > a2 + 50 || a < a2 - 50) {
-      Serial.print("Knob (pin A2) = ");
-      Serial.println(a);
-      if (playsamples && !sample1.isPlaying()) sample1.play(AudioSampleKnob2);
-      a2 = a;
+    if (button1.fallingEdge()) {
+        anybutton = true;
+        Serial.println("Button (pin 1) Press");
+        if (playsamples) {
+            sample1.play(AudioSampleButton2);
+        }
     }
-    state = 2;
-  } else {
-    int a = analogRead(A3);
-    if (a > a3 + 50 || a < a3 - 50) {
-      Serial.print("Knob (pin A3) = ");
-      Serial.println(a);
-      if (playsamples && !sample1.isPlaying()) sample1.play(AudioSampleKnob3);
-      a3 = a;
+    if (button2.fallingEdge()) {
+        anybutton = true;
+        Serial.println("Button (pin 2) Press");
+        if (playsamples) {
+            sample1.play(AudioSampleButton3);
+        }
     }
-    state = 0;
-  }
+    if (button0.risingEdge()) {
+        Serial.println("Button (pin 0) Release");
+    }
+    if (button1.risingEdge()) {
+        Serial.println("Button (pin 1) Release");
+    }
+    if (button2.risingEdge()) {
+        Serial.println("Button (pin 2) Release");
+    }
+    if (state == 0) {
+        int a = analogRead(A1);
+        if (a > a1 + 50 || a < a1 - 50) {
+            Serial.print("Knob (pin A1) = ");
+            Serial.println(a);
+            if (playsamples && !sample1.isPlaying()) {
+                sample1.play(AudioSampleKnob1);
+            }
+            a1 = a;
+        }
+        state = 1;
+    } else if (state == 1) {
+        int a = analogRead(A2);
+        if (a > a2 + 50 || a < a2 - 50) {
+            Serial.print("Knob (pin A2) = ");
+            Serial.println(a);
+            if (playsamples && !sample1.isPlaying()) {
+                sample1.play(AudioSampleKnob2);
+            }
+            a2 = a;
+        }
+        state = 2;
+    } else {
+        int a = analogRead(A3);
+        if (a > a3 + 50 || a < a3 - 50) {
+            Serial.print("Knob (pin A3) = ");
+            Serial.println(a);
+            if (playsamples && !sample1.isPlaying()) {
+                sample1.play(AudioSampleKnob3);
+            }
+            a3 = a;
+        }
+        state = 0;
+    }
 }
 
-elapsedMillis msec=0;
+elapsedMillis msec = 0;
 
 void loop() {
-  update();
+    update();
 
-  // Test microphone
-  if (mode == 255) {
-    playsamples = true;
-    mixer1.gain(0, 1.0);
-    mixer2.gain(0, 1.0);
-    if (anybutton) {
-      mixer1.gain(0, 0);
-      mixer2.gain(0, 0);
-      if (sdcardinit) {
-        if (!(SD.begin(SDCARD_CS_PIN))) {
-          while (1) {
-            Serial.println("Unable to access the SD card");
-            if (playsamples) sample1.play(AudioSampleNosdcard);
-            delay(3500);
-          }
+    // Test microphone
+    if (mode == 255) {
+        playsamples = true;
+        mixer1.gain(0, 1.0);
+        mixer2.gain(0, 1.0);
+        if (anybutton) {
+            mixer1.gain(0, 0);
+            mixer2.gain(0, 0);
+            if (sdcardinit) {
+                if (!(SD.begin(SDCARD_CS_PIN))) {
+                    while (1) {
+                        Serial.println("Unable to access the SD card");
+                        if (playsamples) {
+                            sample1.play(AudioSampleNosdcard);
+                        }
+                        delay(3500);
+                    }
+                }
+                sdcardinit = false;
+            }
+            mode = 123;
         }
-        sdcardinit = false;
-      }
-      mode = 123;
-    }
 
-  // Play WAV file (test SD card, sound quality)
-  } else if (mode == 123) {  
-    mixer1.gain(1, 0.75);
-    mixer2.gain(1, 0.75);
-    if (playSdWav1.isPlaying() == false) {
-      Serial.println("Start playing");
-      playSdWav1.play("SDTEST2.WAV");
-      delay(10); // wait for library to parse WAV info
-    }
-    if (anybutton) {
-      playSdWav1.stop();
-      mixer1.gain(1, 0);
-      mixer2.gain(1, 0);
-      mode = 45;
-      EEPROM.write(400, mode);
-    }
-      
-  // Beeping (test buttons & knobs)
-  } else {
-    mixer1.gain(2, 1.0);
-    mixer2.gain(2, 1.0);
-    if (mode == 45) {
-      Serial.print("Beep #");
-      Serial.println(count);
-      count = count + 1;
-      waveform1.frequency(440);
-      waveform1.amplitude(0.35);
-      msec = 0;
-      mode = 46;
-    } else if (mode == 46) {
-      if (msec > 250) {
-        waveform1.amplitude(0);
-        msec = 0;
-        mode = 47;
-      }
+        // Play WAV file (test SD card, sound quality)
+    } else if (mode == 123) {
+        mixer1.gain(1, 0.75);
+        mixer2.gain(1, 0.75);
+        if (playSdWav1.isPlaying() == false) {
+            Serial.println("Start playing");
+            playSdWav1.play("SDTEST2.WAV");
+            delay(10); // wait for library to parse WAV info
+        }
+        if (anybutton) {
+            playSdWav1.stop();
+            mixer1.gain(1, 0);
+            mixer2.gain(1, 0);
+            mode = 45;
+            EEPROM.write(400, mode);
+        }
+
+        // Beeping (test buttons & knobs)
     } else {
-      if (msec > 1750) {
-        mode = 45;
-      }
+        mixer1.gain(2, 1.0);
+        mixer2.gain(2, 1.0);
+        if (mode == 45) {
+            Serial.print("Beep #");
+            Serial.println(count);
+            count = count + 1;
+            waveform1.frequency(440);
+            waveform1.amplitude(0.35);
+            msec = 0;
+            mode = 46;
+        } else if (mode == 46) {
+            if (msec > 250) {
+                waveform1.amplitude(0);
+                msec = 0;
+                mode = 47;
+            }
+        } else {
+            if (msec > 1750) {
+                mode = 45;
+            }
+        }
+        if (button0.read() == LOW && button1.read() == LOW && button2.read() == LOW) {
+            mixer1.gain(2, 0);
+            mixer2.gain(2, 0);
+            mode = 255;
+        }
     }
-    if (button0.read() == LOW && button1.read() == LOW && button2.read() == LOW) {
-      mixer1.gain(2, 0);
-      mixer2.gain(2, 0);
-      mode = 255;
-    }
-  }
 }
 
 

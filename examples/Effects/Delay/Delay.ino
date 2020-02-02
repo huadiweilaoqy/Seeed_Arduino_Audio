@@ -1,6 +1,6 @@
 // Delay demonstration example, Teensy Audio Library
 //   http://www.pjrc.com/teensy/td_libs_Audio.html
-// 
+//
 // Creates a chirp on the left channel, then
 // three delayed copies on the right channel.
 //
@@ -33,29 +33,29 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=195,272
 // GUItool: end automatically generated code
 
 void setup() {
-  // allocate enough memory for the delay
-  AudioMemory(120);
-  
-  // enable the audio shield
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.5);
-  
-  // configure a sine wave for the chirp
-  // the original is turned on/off by an envelope effect
-  // and output directly on the left channel
-  sine1.frequency(1000);
-  sine1.amplitude(0.5);
+    // allocate enough memory for the delay
+    AudioMemory(120);
 
-  // create 3 delay taps, which connect through a
-  // mixer to the right channel output
-  delay1.delay(0, 110);
-  delay1.delay(1, 220);
-  delay1.delay(2, 330);
+    // enable the audio shield
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.5);
+
+    // configure a sine wave for the chirp
+    // the original is turned on/off by an envelope effect
+    // and output directly on the left channel
+    sine1.frequency(1000);
+    sine1.amplitude(0.5);
+
+    // create 3 delay taps, which connect through a
+    // mixer to the right channel output
+    delay1.delay(0, 110);
+    delay1.delay(1, 220);
+    delay1.delay(2, 330);
 }
 
 void loop() {
-  envelope1.noteOn();
-  delay(36);
-  envelope1.noteOff();
-  delay(4000);
+    envelope1.noteOn();
+    delay(36);
+    envelope1.noteOff();
+    delay(4000);
 }

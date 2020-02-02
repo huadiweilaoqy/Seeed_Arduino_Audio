@@ -40,38 +40,38 @@ AudioControlSGTL5000     sgtl5000_2;
 //#define SDCARD_SCK_PIN   13
 
 void setup() {
-  Serial.begin(9600);
-  AudioMemory(10);
-  
-  sgtl5000_1.setAddress(LOW);
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.5);
+    Serial.begin(9600);
+    AudioMemory(10);
 
-  sgtl5000_2.setAddress(HIGH);
-  sgtl5000_2.enable();
-  sgtl5000_2.volume(0.5);
+    sgtl5000_1.setAddress(LOW);
+    sgtl5000_1.enable();
+    sgtl5000_1.volume(0.5);
 
-  SPI.setMOSI(SDCARD_MOSI_PIN);
-  SPI.setSCK(SDCARD_SCK_PIN);
-  if (!(SD.begin(SDCARD_CS_PIN))) {
-    // stop here, but print a message repetitively
-    while (1) {
-      Serial.println("Unable to access the SD card");
-      delay(500);
+    sgtl5000_2.setAddress(HIGH);
+    sgtl5000_2.enable();
+    sgtl5000_2.volume(0.5);
+
+    SPI.setMOSI(SDCARD_MOSI_PIN);
+    SPI.setSCK(SDCARD_SCK_PIN);
+    if (!(SD.begin(SDCARD_CS_PIN))) {
+        // stop here, but print a message repetitively
+        while (1) {
+            Serial.println("Unable to access the SD card");
+            delay(500);
+        }
     }
-  }
 }
 
 void loop() {
-  if (playSdWav1.isPlaying() == false) {
-    Serial.println("Start playing 1");
-    playSdWav1.play("SDTEST2.WAV");
-    delay(10); // wait for library to parse WAV info
-  }
-  if (playSdWav2.isPlaying() == false) {
-    Serial.println("Start playing 2");
-    playSdWav2.play("SDTEST4.WAV");
-    delay(10); // wait for library to parse WAV info
-  }
+    if (playSdWav1.isPlaying() == false) {
+        Serial.println("Start playing 1");
+        playSdWav1.play("SDTEST2.WAV");
+        delay(10); // wait for library to parse WAV info
+    }
+    if (playSdWav2.isPlaying() == false) {
+        Serial.println("Start playing 2");
+        playSdWav2.play("SDTEST4.WAV");
+        delay(10); // wait for library to parse WAV info
+    }
 }
 

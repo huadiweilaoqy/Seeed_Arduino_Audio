@@ -29,29 +29,29 @@ const int myInput = AUDIO_INPUT_LINEIN;
 // const int myInput = AUDIO_INPUT_MIC;
 
 void setup() {
-  // The stereo line input is encoded into mid and side components.
-  // The mid component will be attenuated (mixer1), which leaves some 
-  // headroom for the side component to be increased in volume (mixer2).
-  // Furthermore, the side component is high-passed (biquad1).
-  AudioMemory(6);
-  sgtl5000_1.enable();
-  sgtl5000_1.inputSelect(myInput);
-  sgtl5000_1.volume(1.0); // output volume
+    // The stereo line input is encoded into mid and side components.
+    // The mid component will be attenuated (mixer1), which leaves some
+    // headroom for the side component to be increased in volume (mixer2).
+    // Furthermore, the side component is high-passed (biquad1).
+    AudioMemory(6);
+    sgtl5000_1.enable();
+    sgtl5000_1.inputSelect(myInput);
+    sgtl5000_1.volume(1.0); // output volume
 
-  ms_enc1.encode();
-  ms_dec1.decode();
+    ms_enc1.encode();
+    ms_dec1.decode();
 
-  // We attenuate the MID channel a little to prevent saturation when increasing the SIDE channel gain
-  mixer1.gain(0, 0.9);
-  // We increase the gain of the SIDE channel to increase stereo width
-  mixer2.gain(0, 2.0);
-  // But, we remove low frequencies from the side channel. Better for sub and doesn't get your ears twinkling with out-of-phase basses using a headphone
-  biquad1.setHighpass(0, 200, 0.7);
-  
-  Serial.begin(9600);
-  while (!Serial) ;
-  delay(3000);
-  Serial.println("Initialized mid-side example");
+    // We attenuate the MID channel a little to prevent saturation when increasing the SIDE channel gain
+    mixer1.gain(0, 0.9);
+    // We increase the gain of the SIDE channel to increase stereo width
+    mixer2.gain(0, 2.0);
+    // But, we remove low frequencies from the side channel. Better for sub and doesn't get your ears twinkling with out-of-phase basses using a headphone
+    biquad1.setHighpass(0, 200, 0.7);
+
+    Serial.begin(9600);
+    while (!Serial) ;
+    delay(3000);
+    Serial.println("Initialized mid-side example");
 }
 
 void loop() {
